@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Polar Heart Monitor</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="edit_message">Settings</string>
+    <string name="button_send">send</string>
+    
+      <string name="on">Turn On</string>
+   <string name="off">Turn Off</string>
+   <string name="Visible">Get Visible</string>
+   <string name="List">List Devices</string>
+
+</resources>
