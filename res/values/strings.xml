@@ -4,6 +4,9 @@
     <string name="app_name">Polar Heart Monitor</string>
     <string name="selectDevice">Select Your device</string>
     <string name="action_settings">Disconnect</string>
+    <string name="couldnotconnect">Sorry Could not connect to Polar device</string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="bluetoothOff">Your bluetooth interface is down you like to turn it on?</string>
      
 
 

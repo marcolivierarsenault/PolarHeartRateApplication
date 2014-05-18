@@ -11,9 +11,11 @@ import android.util.Log;
 public class ConnectThread extends Thread {
 	BluetoothAdapter mBluetoothAdapter;
     private final BluetoothSocket mmSocket;
-    public ConnectThread(BluetoothDevice device) {
+    MainActivity ac;
+    public ConnectThread(BluetoothDevice device, MainActivity ac) {
         // Use a temporary object that is later assigned to mmSocket,
         // because mmSocket is final
+    	this.ac=ac;
         BluetoothSocket tmp = null;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
  
@@ -24,7 +26,7 @@ public class ConnectThread extends Thread {
             tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
         } catch (IOException e) { }
         mmSocket = tmp;
-        this.run();
+        
     }
  
     public void run() {
@@ -34,11 +36,14 @@ public class ConnectThread extends Thread {
         try {
             // Connect the device through the socket. This will block
             // until it succeeds or throws an exception
+        	if(mmSocket.isConnected())
+        		mmSocket.close();
             mmSocket.connect();
         } catch (IOException connectException) {
             // Unable to connect; close the socket and get out
-        	//TODO handle error
-        	Log.d("aa",connectException.toString());
+        	ac.connectionError();
+        	Log.d("Error Bluetooth",connectException.toString());
+        	        	
             try {
                 mmSocket.close();
             } catch (IOException closeException) { }
@@ -46,12 +51,18 @@ public class ConnectThread extends Thread {
         }
  
         // Do work to manage the connection (in a separate thread)
-        //TODO if connection break
         while (true){
         	try {
 				System.out.println(mmSocket.getInputStream().read());
 			} catch (IOException e) {
-				e.printStackTrace();
+				ac.connectionError();
+	        	Log.d("Error Bluetooth",e.toString());
+	        	        	
+	            try {
+	            	mmSocket.getInputStream().close();
+	                mmSocket.close();
+	            } catch (IOException closeException) { }
+	            return;
 			}
         }
     }
