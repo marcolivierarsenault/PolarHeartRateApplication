@@ -12,6 +12,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,10 +79,19 @@ public class MainActivity extends Activity  implements OnItemSelectedListener {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
+			System.out.println("menu pesé");
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	
+	   @Override
+	   public boolean onCreateOptionsMenu(Menu menu) {
+	      // Inflate the menu; this adds items to the action bar if it is present.
+	      getMenuInflater().inflate(R.menu.main, menu);
+	      return true;
+	   }
 	
 	/**
 	 * A placeholder fragment containing a simple view.
