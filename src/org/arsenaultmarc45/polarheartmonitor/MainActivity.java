@@ -5,25 +5,24 @@ import java.util.List;
 import java.util.Set;
 
 import android.app.Activity;
-import android.app.ActionBar;
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.os.Build;
 
+
+/**
+ * This program connect to a bluetooth polar heart rate monitor and display data
+ * @author Marco
+ *
+ */
 public class MainActivity extends Activity  implements OnItemSelectedListener {
 	
 	int i =0;
