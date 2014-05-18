@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Set;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,8 @@ import android.widget.Spinner;
  */
 public class MainActivity extends Activity  implements OnItemSelectedListener {
 	
+	BluetoothAdapter mBluetoothAdapter;
+	Set<BluetoothDevice> pairedDevices;
 	int i =0;
 
 	@Override
@@ -44,8 +48,9 @@ public class MainActivity extends Activity  implements OnItemSelectedListener {
 		
 		//Discover bluetooth devices
 		List<String> list = new ArrayList<String>();
-		BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-		Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+		list.add("");
+		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		pairedDevices = mBluetoothAdapter.getBondedDevices();
 		// If there are paired devices
 		if (pairedDevices.size() > 0) {
 		    // Loop through paired devices
@@ -87,7 +92,10 @@ public class MainActivity extends Activity  implements OnItemSelectedListener {
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
 			long arg3) {
-		//ID est celui en ordre
+		if(arg2!=0){
+
+
+		}
 		
 	}
 
