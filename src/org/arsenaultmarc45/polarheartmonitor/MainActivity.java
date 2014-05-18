@@ -5,11 +5,9 @@ import java.util.List;
 import java.util.Set;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -49,6 +47,9 @@ public class MainActivity extends Activity  implements OnItemSelectedListener {
 	public void onStart(){
 		super.onStart();
 		
+		
+		//TODO if bluetooth is off
+		
 		//Discover bluetooth devices
 		List<String> list = new ArrayList<String>();
 		list.add("");
@@ -79,6 +80,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
+			//TODO code menu
 			System.out.println("menu pesé");
 			return true;
 		}
@@ -127,4 +129,9 @@ public class MainActivity extends Activity  implements OnItemSelectedListener {
 		
 	}
 
+	
+	//TODO handle disconect on destroy
+	//TODO about page
+	//TODO Graph
+	//TODO display Data
 }

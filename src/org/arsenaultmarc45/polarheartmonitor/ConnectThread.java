@@ -11,13 +11,10 @@ import android.util.Log;
 public class ConnectThread extends Thread {
 	BluetoothAdapter mBluetoothAdapter;
     private final BluetoothSocket mmSocket;
-    private final BluetoothDevice mmDevice;
- 
     public ConnectThread(BluetoothDevice device) {
         // Use a temporary object that is later assigned to mmSocket,
         // because mmSocket is final
         BluetoothSocket tmp = null;
-        mmDevice = device;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
  
         // Get a BluetoothSocket to connect with the given BluetoothDevice
@@ -40,6 +37,7 @@ public class ConnectThread extends Thread {
             mmSocket.connect();
         } catch (IOException connectException) {
             // Unable to connect; close the socket and get out
+        	//TODO handle error
         	Log.d("aa",connectException.toString());
             try {
                 mmSocket.close();
@@ -48,11 +46,11 @@ public class ConnectThread extends Thread {
         }
  
         // Do work to manage the connection (in a separate thread)
+        //TODO if connection break
         while (true){
         	try {
 				System.out.println(mmSocket.getInputStream().read());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         }
