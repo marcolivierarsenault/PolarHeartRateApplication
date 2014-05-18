@@ -27,6 +27,7 @@ import android.widget.Spinner;
  */
 public class MainActivity extends Activity  implements OnItemSelectedListener {
 	
+	ConnectThread reader;
 	BluetoothAdapter mBluetoothAdapter;
 	Set<BluetoothDevice> pairedDevices;
 	int i =0;
@@ -93,7 +94,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener {
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
 			long arg3) {
 		if(arg2!=0){
-
+			reader = new ConnectThread((BluetoothDevice) pairedDevices.toArray()[arg2-1]);
 
 		}
 		
