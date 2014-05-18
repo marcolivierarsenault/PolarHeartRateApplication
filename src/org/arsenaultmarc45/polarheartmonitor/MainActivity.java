@@ -1,10 +1,18 @@
 package org.arsenaultmarc45.polarheartmonitor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
+
+import com.androidplot.Plot;
+import com.androidplot.xy.LineAndPointFormatter;
+import com.androidplot.xy.PointLabelFormatter;
+import com.androidplot.xy.XYPlot;
+import com.androidplot.xy.XYSeries;
+import com.androidplot.xy.SimpleXYSeries;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -40,6 +48,8 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	Set<BluetoothDevice> pairedDevices;
 	boolean menuBool = false;
 	int i =0;
+	private XYPlot plot;
+	SimpleXYSeries series1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +101,36 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		else{
 			listBT();
 		}
+		
+		
+		
+		
+		// initialize our XYPlot reference:
+        plot = (XYPlot) findViewById(R.id.dynamicPlot);
+ 
+        // Create a couple arrays of y-values to plot:
+        Number[] series1Numbers = {};
+ 
+        // Turn the above arrays into XYSeries':
+        series1 = new SimpleXYSeries(
+                Arrays.asList(series1Numbers),          // SimpleXYSeries takes a List so turn our array into a List
+                SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, // Y_VALS_ONLY means use the element index as the x value
+                "Heart Rate");                             // Set the display title of the series
+ 
+      
+        // and configure it from xml:
+        LineAndPointFormatter series1Format = new LineAndPointFormatter();
+        series1Format.setPointLabelFormatter(new PointLabelFormatter());
+ 
+        // add a new series' to the xyplot:
+        plot.addSeries(series1, series1Format);
+ 
+
+ 
+        // reduce the number of range labels
+        plot.setTicksPerRangeLabel(3);
+        plot.getGraphWidget().setDomainLabelOrientation(-45);
+				
 
 	}
 	
@@ -188,10 +228,6 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 
 	}
 
-
-	//TODO Graph
-
-
 	public void connectionError(){
 		menuBool=false;
 		runOnUiThread(new Runnable() {
@@ -210,6 +246,9 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 				TextView rpm = (TextView) findViewById(R.id.rpm);
 				rpm.setText(DataHandler.getInstance().getLastValue()+" RPM");
 				
+				series1.addLast(0, DataHandler.getInstance().getLastValue());				
+				plot.redraw();
+				
 				TextView min = (TextView) findViewById(R.id.min);
 				min.setText("Min "+DataHandler.getInstance().getMin()+" RPM");
 				
@@ -226,4 +265,6 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		receiveData();
 		
 	}
+	
+	    
 }
