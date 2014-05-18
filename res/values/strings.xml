@@ -7,7 +7,7 @@
     <string name="couldnotconnect">Sorry Could not connect to Polar device</string>
     <string name="bluetooth">Bluetooth</string>
     <string name="bluetoothOff">Your bluetooth interface is down you like to turn it on?</string>
-     
+    <string name="CodeColor" >"#ff0000"</string>
 
 
 </resources>

@@ -53,7 +53,7 @@ public class ConnectThread extends Thread {
         // Do work to manage the connection (in a separate thread)
         while (true){
         	try {
-				System.out.println(mmSocket.getInputStream().read());
+				DataHandler.getInstance().acqui(mmSocket.getInputStream().read());
 			} catch (IOException e) {
 				ac.connectionError();
 	        	Log.d("Error Bluetooth",e.toString());

@@ -2,6 +2,8 @@ package org.arsenaultmarc45.polarheartmonitor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Set;
 
 import android.app.Activity;
@@ -20,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -28,7 +31,7 @@ import android.widget.Toast;
  * @author Marco
  *
  */
-public class MainActivity extends Activity  implements OnItemSelectedListener {
+public class MainActivity extends Activity  implements OnItemSelectedListener, Observer {
 
 	boolean searchBt = true;
 	ConnectThread reader;
@@ -57,6 +60,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener {
 
 	public void onStart(){
 		super.onStart();
+		DataHandler.getInstance().addObserver(this);
 
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();    
 		if (!mBluetoothAdapter.isEnabled()) {
@@ -192,5 +196,23 @@ public class MainActivity extends Activity  implements OnItemSelectedListener {
 				Toast.makeText(getBaseContext(),getString(R.string.couldnotconnect),Toast.LENGTH_SHORT).show();
 			}
 		});
+	}
+	
+	public void receiveData(){
+		
+		runOnUiThread(new Runnable() {
+			public void run() {
+				TextView rpm = (TextView) findViewById(R.id.rpm);
+				rpm.setText(DataHandler.getInstance().getLastValue()+" RPM");
+				
+			}
+		});
+	}
+
+	@Override
+	public void update(Observable observable, Object data) {
+
+		receiveData();
+		
 	}
 }

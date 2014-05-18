@@ -19,6 +19,15 @@
         android:id="@+id/spinner1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    
+
+        <TextView
+            android:id="@+id/rpm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="RPM"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/bpmColor"
+            android:textSize="60sp" />
     
 </LinearLayout >
