@@ -2,11 +2,14 @@ package org.arsenaultmarc45.polarheartmonitor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -39,12 +42,24 @@ public class MainActivity extends Activity  implements OnItemSelectedListener {
 	
 	public void onStart(){
 		super.onStart();
-		Spinner spinner1 = (Spinner) findViewById(R.id.spinner1);
+		
+		//Discover bluetooth devices
 		List<String> list = new ArrayList<String>();
-		list.add("list 1");
-		list.add("list 2");
-		list.add("list 3");
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+		BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+		// If there are paired devices
+		if (pairedDevices.size() > 0) {
+		    // Loop through paired devices
+		    for (BluetoothDevice device : pairedDevices) {
+		        // Add the name and address to an array adapter to show in a ListView
+		        list.add(device.getName() + "\n" + device.getAddress());
+		    }
+		}
+		
+		
+		//Populate drop down
+		Spinner spinner1 = (Spinner) findViewById(R.id.spinner1);
+				ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
 			android.R.layout.simple_spinner_item, list);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner1.setOnItemSelectedListener(this);
