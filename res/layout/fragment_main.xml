@@ -25,9 +25,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="RPM"
+            android:text="@string/rpm"
+            android:paddingTop="20dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/bpmColor"
-            android:textSize="60sp" />
+            android:textSize="70sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" >
+
+            <TextView
+                android:id="@+id/min"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="@string/min" />
+
+            <TextView
+                android:id="@+id/max"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="@string/max" />
+        </LinearLayout>
     
 </LinearLayout >

@@ -12,6 +12,7 @@ import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -130,6 +131,10 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 			menuBool=false;
 			return true;
 		}
+		else if (id==R.id.about){
+			Intent intent = new Intent(this, AboutActivity.class);
+			startActivity(intent);
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -184,9 +189,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	}
 
 
-	//TODO about page
 	//TODO Graph
-	//TODO display Data
 
 
 	public void connectionError(){
@@ -194,6 +197,8 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		runOnUiThread(new Runnable() {
 			public void run() {
 				Toast.makeText(getBaseContext(),getString(R.string.couldnotconnect),Toast.LENGTH_SHORT).show();
+				TextView rpm = (TextView) findViewById(R.id.rpm);
+				rpm.setText("0 RPM");
 			}
 		});
 	}
@@ -204,6 +209,12 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 			public void run() {
 				TextView rpm = (TextView) findViewById(R.id.rpm);
 				rpm.setText(DataHandler.getInstance().getLastValue()+" RPM");
+				
+				TextView min = (TextView) findViewById(R.id.min);
+				min.setText("Min "+DataHandler.getInstance().getMin()+" RPM");
+				
+				TextView max = (TextView) findViewById(R.id.max);
+				max.setText("Max "+DataHandler.getInstance().getMax()+" RPM");
 				
 			}
 		});
