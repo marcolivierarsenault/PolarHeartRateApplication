@@ -50,7 +50,7 @@ public class ConnectThread extends Thread {
         // Do work to manage the connection (in a separate thread)
         while (true){
         	try {
-				mmSocket.getInputStream().read();
+				System.out.println(mmSocket.getInputStream().read());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
