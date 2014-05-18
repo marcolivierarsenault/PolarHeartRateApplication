@@ -7,11 +7,9 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
-import com.androidplot.Plot;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.PointLabelFormatter;
 import com.androidplot.xy.XYPlot;
-import com.androidplot.xy.XYSeries;
 import com.androidplot.xy.SimpleXYSeries;
 
 import android.app.Activity;
@@ -246,9 +244,11 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 				TextView rpm = (TextView) findViewById(R.id.rpm);
 				rpm.setText(DataHandler.getInstance().getLastValue()+" RPM");
 				
-				series1.addLast(0, DataHandler.getInstance().getLastValue());				
-				plot.redraw();
-				
+				if(DataHandler.getInstance().getLastValue()!=0){
+					series1.addLast(0, DataHandler.getInstance().getLastValue());				
+					plot.redraw();
+				}
+
 				TextView min = (TextView) findViewById(R.id.min);
 				min.setText("Min "+DataHandler.getInstance().getMin()+" RPM");
 				
