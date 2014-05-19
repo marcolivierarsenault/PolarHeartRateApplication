@@ -19,6 +19,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -104,14 +105,16 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		
 		// Create Graph
         plot = (XYPlot) findViewById(R.id.dynamicPlot);
-        Number[] series1Numbers = {};
-        series1 = new SimpleXYSeries(
-        Arrays.asList(series1Numbers),SimpleXYSeries.ArrayFormat.Y_VALS_ONLY,"Heart Rate"); 
-        LineAndPointFormatter series1Format = new LineAndPointFormatter();
-        series1Format.setPointLabelFormatter(new PointLabelFormatter());
-        plot.addSeries(series1, series1Format); 
-        plot.setTicksPerRangeLabel(3);
-        plot.getGraphWidget().setDomainLabelOrientation(-45);
+        if(plot.getSeriesSet().size()==0){
+        	Number[] series1Numbers = {};
+            series1 = new SimpleXYSeries(
+            Arrays.asList(series1Numbers),SimpleXYSeries.ArrayFormat.Y_VALS_ONLY,"Heart Rate"); 
+            LineAndPointFormatter series1Format = new LineAndPointFormatter( Color.rgb(0, 0, 255), Color.rgb(200, 200, 200), null, null ); 
+            series1Format.setPointLabelFormatter(new PointLabelFormatter());
+            plot.addSeries(series1, series1Format); 
+	        plot.setTicksPerRangeLabel(3);
+	        plot.getGraphWidget().setDomainLabelOrientation(-45);
+        }
 				
 
 	}
@@ -222,6 +225,8 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 				Toast.makeText(getBaseContext(),getString(R.string.couldnotconnect),Toast.LENGTH_SHORT).show();
 				TextView rpm = (TextView) findViewById(R.id.rpm);
 				rpm.setText("0 RPM");
+				Spinner spinner1 = (Spinner) findViewById(R.id.spinner1);
+				spinner1.setSelection(0);
 			}
 		});
 	}
