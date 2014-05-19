@@ -251,10 +251,10 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 				}
 
 				TextView min = (TextView) findViewById(R.id.min);
-				min.setText("Min "+DataHandler.getInstance().getMin()+" RPM");
+				min.setText("Min "+DataHandler.getInstance().getMin()+" BPM");
 				
 				TextView max = (TextView) findViewById(R.id.max);
-				max.setText("Max "+DataHandler.getInstance().getMax()+" RPM");				
+				max.setText("Max "+DataHandler.getInstance().getMax()+" BPM");				
 			}
 		});
 	}
