@@ -224,7 +224,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 			public void run() {
 				Toast.makeText(getBaseContext(),getString(R.string.couldnotconnect),Toast.LENGTH_SHORT).show();
 				TextView rpm = (TextView) findViewById(R.id.rpm);
-				rpm.setText("0 RPM");
+				rpm.setText("0 BMP");
 				Spinner spinner1 = (Spinner) findViewById(R.id.spinner1);
 				spinner1.setSelection(0);
 			}
@@ -243,7 +243,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		runOnUiThread(new Runnable() {
 			public void run() {
 				TextView rpm = (TextView) findViewById(R.id.rpm);
-				rpm.setText(DataHandler.getInstance().getLastValue()+" RPM");
+				rpm.setText(DataHandler.getInstance().getLastValue()+" BPM");
 				
 				if(DataHandler.getInstance().getLastValue()!=0){
 					series1.addLast(0, DataHandler.getInstance().getLastValue());				

@@ -7,16 +7,15 @@
     <string name="couldnotconnect">Sorry Could not connect to Polar device</string>
     <string name="bluetooth">Bluetooth</string>
     <string name="bluetoothOff">Your bluetooth interface is down you like to turn it on?</string>
-    <string name="rpm">RPM</string>
+    <string name="rpm">BPM</string>
     <string name="min">min</string>
     <string name="max">max</string>
     <string name="about">About</string>
     <string name="title_activity_about">About</string>
     <string name="aboutText">
-        This app is a simple app that provide connectivity for Polar heart monitor. 
-        It only diplay information without complex setting or logging information for jogging.
+        This app is a simple app that provide connectivity for Polar heart monitor. \nIt only diplay information without complex setting or logging information for jogging.
         No need to start a session or to record data.
         
-        ****Polar device need to be paired with the phone in android.</string>
+        \n\n\n****Polar device need to be paired with the phone in android.</string>
 
 </resources>
