@@ -1,4 +1,4 @@
-PolarHeartRateApplication
+Polar Heart Rate Application
 =========================
 
 Android Application that display data Polar heart rate connected by bluetooth.
