@@ -71,6 +71,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		super.onStart();
 		DataHandler.getInstance().addObserver(this);
 
+		//Verify if bluetooth if activated, if not activate it
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();    
 		if (!mBluetoothAdapter.isEnabled()) {
 			new AlertDialog.Builder(this)
@@ -78,10 +79,8 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 			.setMessage(R.string.bluetoothOff)
 			.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) { 
-
 					mBluetoothAdapter.enable();
-					try {
-						Thread.sleep(2000);
+					try {Thread.sleep(2000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -103,35 +102,23 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		
 		
 		
-		// initialize our XYPlot reference:
+		// Create Graph
         plot = (XYPlot) findViewById(R.id.dynamicPlot);
- 
-        // Create a couple arrays of y-values to plot:
         Number[] series1Numbers = {};
- 
-        // Turn the above arrays into XYSeries':
         series1 = new SimpleXYSeries(
-                Arrays.asList(series1Numbers),          // SimpleXYSeries takes a List so turn our array into a List
-                SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, // Y_VALS_ONLY means use the element index as the x value
-                "Heart Rate");                             // Set the display title of the series
- 
-      
-        // and configure it from xml:
+        Arrays.asList(series1Numbers),SimpleXYSeries.ArrayFormat.Y_VALS_ONLY,"Heart Rate"); 
         LineAndPointFormatter series1Format = new LineAndPointFormatter();
         series1Format.setPointLabelFormatter(new PointLabelFormatter());
- 
-        // add a new series' to the xyplot:
-        plot.addSeries(series1, series1Format);
- 
-
- 
-        // reduce the number of range labels
+        plot.addSeries(series1, series1Format); 
         plot.setTicksPerRangeLabel(3);
         plot.getGraphWidget().setDomainLabelOrientation(-45);
 				
 
 	}
 	
+	/**
+	 * Run on startup to list bluetooth paired device
+	 */
 	public void listBT(){
 		if(searchBt){
 			//Discover bluetooth devices
@@ -158,10 +145,10 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		}
 	}
 
+	/**
+	 * When menu button are pressed
+	 */
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			reader.cancel();
@@ -188,7 +175,6 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	 * A placeholder fragment containing a simple view.
 	 */
 	public static class PlaceholderFragment extends Fragment {
-
 		public PlaceholderFragment() {
 		}
 
@@ -226,6 +212,9 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 
 	}
 
+	/**
+	 * Called when bluetooth connection failed
+	 */
 	public void connectionError(){
 		menuBool=false;
 		runOnUiThread(new Runnable() {
@@ -237,8 +226,15 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		});
 	}
 	
-	public void receiveData(){
-		
+	@Override
+	public void update(Observable observable, Object data) {
+		receiveData();		
+	}
+	
+	/**
+	 * Update Gui with new value from receiver
+	 */
+	public void receiveData(){		
 		runOnUiThread(new Runnable() {
 			public void run() {
 				TextView rpm = (TextView) findViewById(R.id.rpm);
@@ -253,18 +249,9 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 				min.setText("Min "+DataHandler.getInstance().getMin()+" RPM");
 				
 				TextView max = (TextView) findViewById(R.id.max);
-				max.setText("Max "+DataHandler.getInstance().getMax()+" RPM");
-				
+				max.setText("Max "+DataHandler.getInstance().getMax()+" RPM");				
 			}
 		});
 	}
-
-	@Override
-	public void update(Observable observable, Object data) {
-
-		receiveData();
-		
-	}
-	
 	    
 }

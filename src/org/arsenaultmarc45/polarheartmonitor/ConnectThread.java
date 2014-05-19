@@ -8,6 +8,11 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
+/**
+ * This thread to the connection with the bluetooth device
+ * @author Marco
+ *
+ */
 public class ConnectThread extends Thread {
 	BluetoothAdapter mBluetoothAdapter;
     private final BluetoothSocket mmSocket;
