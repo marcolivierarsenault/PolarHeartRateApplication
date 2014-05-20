@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Moniteur de bande Polar</string>
+    <string name="selectDevice">Sélectionner la bande Polar</string>
+    <string name="action_settings">Déconnecter</string>
+    <string name="couldnotconnect">"La bande n'est plus connectée."</string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="bluetoothOff">"L'interface Bluetooth est éteinte, voulez vous l'allumer?"</string>
+    <string name="rpm">BPM</string>
+    <string name="min">min</string>
+    <string name="max">max</string>
+    <string name="about">À propos</string>
+    <string name="title_activity_about">À propos</string>
+    <string name="aboutText">"Cette application est une application qui fournit une connection bluetooth pour les bandes Polar.
+        \nL'application fournis une interface simple qui affiche simplement le battement par minute.        
+        \n\n\n****La bande Polar doit être pairé avec le téléphone avant."
+	</string>
+
+</resources>
