@@ -1,4 +1,4 @@
-package org.arsenaultmarc45.polarheartmonitor;
+package org.marco45.polarheartmonitor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,6 +7,8 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
+import org.arsenaultmarc45.polarheartmonitor.R;
+
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.PointLabelFormatter;
 import com.androidplot.xy.XYPlot;
@@ -14,18 +16,15 @@ import com.androidplot.xy.SimpleXYSeries;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -54,11 +53,6 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction()
-			.add(R.id.container, new PlaceholderFragment()).commit();
-		}
 
 	}
 	
@@ -173,23 +167,6 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main,
-					container, false);
-			return rootView;
-		}
-	}
-
 
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,

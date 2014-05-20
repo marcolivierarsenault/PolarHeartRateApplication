@@ -1,4 +1,4 @@
-package org.arsenaultmarc45.polarheartmonitor;
+package org.marco45.polarheartmonitor;
 
 import java.io.IOException;
 import java.util.UUID;
