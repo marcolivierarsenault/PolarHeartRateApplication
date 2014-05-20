@@ -13,8 +13,8 @@
     <string name="about">À propos</string>
     <string name="title_activity_about">À propos</string>
     <string name="aboutText">"Cette application est une application qui fournit une connection bluetooth pour les bandes Polar.
-        \nL'application fournis une interface simple qui affiche simplement le battement par minute.        
-        \n\n\n****La bande Polar doit être pairé avec le téléphone avant."
+        \nL'application fournit une interface simple qui affiche simplement le battement de coeur par minute.        
+        \n\n\n****La bande Polar doit être pairé avec le téléphone avant de lancer cette application."
 	</string>
 
 </resources>
