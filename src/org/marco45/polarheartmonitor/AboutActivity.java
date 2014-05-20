@@ -1,6 +1,5 @@
 package org.marco45.polarheartmonitor;
 
-import org.arsenaultmarc45.polarheartmonitor.R;
 
 import android.app.Activity;
 import android.os.Bundle;

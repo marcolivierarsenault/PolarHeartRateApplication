@@ -7,7 +7,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
-import org.arsenaultmarc45.polarheartmonitor.R;
 
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.PointLabelFormatter;
@@ -54,16 +53,6 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-	}
-	
-	@Override
-	protected void onDestroy(){
-		super.onDestroy();
-		reader.cancel();
-	}
-
-	public void onStart(){
-		super.onStart();
 		DataHandler.getInstance().addObserver(this);
 
 		//Verify if bluetooth if activated, if not activate it
@@ -93,26 +82,38 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		else{
 			listBT();
 		}
-		
-		
-		
-		
+
+
+
+
 		// Create Graph
-        plot = (XYPlot) findViewById(R.id.dynamicPlot);
-        if(plot.getSeriesSet().size()==0){
-        	Number[] series1Numbers = {};
-            series1 = new SimpleXYSeries(
-            Arrays.asList(series1Numbers),SimpleXYSeries.ArrayFormat.Y_VALS_ONLY,"Heart Rate"); 
-            LineAndPointFormatter series1Format = new LineAndPointFormatter( Color.rgb(0, 0, 255), Color.rgb(200, 200, 200), null, null ); 
-            series1Format.setPointLabelFormatter(new PointLabelFormatter());
-            plot.addSeries(series1, series1Format); 
-	        plot.setTicksPerRangeLabel(3);
-	        plot.getGraphWidget().setDomainLabelOrientation(-45);
-        }
-				
+		plot = (XYPlot) findViewById(R.id.dynamicPlot);
+		if(plot.getSeriesSet().size()==0){
+			Number[] series1Numbers = {};
+			series1 = new SimpleXYSeries(
+					Arrays.asList(series1Numbers),SimpleXYSeries.ArrayFormat.Y_VALS_ONLY,"Heart Rate"); 
+			LineAndPointFormatter series1Format = new LineAndPointFormatter( Color.rgb(0, 0, 255), Color.rgb(200, 200, 200), null, null ); 
+			series1Format.setPointLabelFormatter(new PointLabelFormatter());
+			plot.addSeries(series1, series1Format); 
+			plot.setTicksPerRangeLabel(3);
+			plot.getGraphWidget().setDomainLabelOrientation(-45);
+		}
 
 	}
-	
+
+	@Override
+	protected void onDestroy(){
+		super.onDestroy();
+		//reader.cancel();
+	}
+
+	public void onStart(){
+		super.onStart();
+
+
+
+	}
+
 	/**
 	 * Run on startup to list bluetooth paired device
 	 */
@@ -207,12 +208,12 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 			}
 		});
 	}
-	
+
 	@Override
 	public void update(Observable observable, Object data) {
 		receiveData();		
 	}
-	
+
 	/**
 	 * Update Gui with new value from receiver
 	 */
@@ -221,7 +222,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 			public void run() {
 				TextView rpm = (TextView) findViewById(R.id.rpm);
 				rpm.setText(DataHandler.getInstance().getLastValue()+" BPM");
-				
+
 				if(DataHandler.getInstance().getLastValue()!=0){
 					series1.addLast(0, DataHandler.getInstance().getLastValue());				
 					plot.redraw();
@@ -229,11 +230,11 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 
 				TextView min = (TextView) findViewById(R.id.min);
 				min.setText("Min "+DataHandler.getInstance().getMin()+" BPM");
-				
+
 				TextView max = (TextView) findViewById(R.id.max);
 				max.setText("Max "+DataHandler.getInstance().getMax()+" BPM");				
 			}
 		});
 	}
-	    
+
 }

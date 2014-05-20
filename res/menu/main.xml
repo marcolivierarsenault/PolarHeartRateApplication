@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.arsenaultmarc45.polarheartmonitor.MainActivity" >
+    tools:context="org.marco45.polarheartmonitor.MainActivity" >
 
     <item
         android:id="@+id/action_settings"

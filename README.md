@@ -6,7 +6,7 @@ Difference with other apps is this one do not start session or profile of any ty
 I simply show the data on screed to be seen quickly
 
 You can download app on Google play
-https://play.google.com/store/apps/details?id=org.arsenaultmarc45.polarheartmonitor
+https://play.google.com/store/apps/details?id=org.marco45.polarheartmonitor
 
 or you can download it in Github release
 https://github.com/marcolivierarsenault/PolarHeartRateApplication/releases/tag/V1.0
