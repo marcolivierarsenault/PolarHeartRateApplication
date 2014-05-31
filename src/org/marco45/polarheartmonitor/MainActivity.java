@@ -7,11 +7,13 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
-
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.PointLabelFormatter;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.SimpleXYSeries;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -47,7 +49,9 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	int i =0;
 	private XYPlot plot;
 	SimpleXYSeries series1;
-
+	Tracker t;//Set the Tracker
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -83,7 +87,10 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 			listBT();
 		}
 
-
+		//ANALYTIC
+		t = GoogleAnalytics.getInstance(this).newTracker("UA-51478243-1");
+        t.setScreenName("Polar main page");
+        t.send(new HitBuilders.AppViewBuilder().build());
 
 
 		// Create Graph
@@ -98,9 +105,11 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 			plot.setTicksPerRangeLabel(3);
 			plot.getGraphWidget().setDomainLabelOrientation(-45);
 		}
+		
+	
 
 	}
-
+	
 	@Override
 	protected void onDestroy(){
 		super.onDestroy();
@@ -150,7 +159,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			reader.cancel();
-			System.out.println("menu pesé");
+			System.out.println("menu pesï¿½");
 			menuBool=false;
 			return true;
 		}
@@ -172,7 +181,15 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
 			long arg3) {
+		
+		
+        
 		if(arg2!=0){
+			//ANALYTIC
+	        t.setScreenName("Polar Bluetooth Used");
+	        t.send(new HitBuilders.AppViewBuilder().build());
+	        
+	      //Actual work
 			reader = new ConnectThread((BluetoothDevice) pairedDevices.toArray()[arg2-1], this);
 			reader.start();
 			menuBool=true;
