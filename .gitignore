@@ -11,3 +11,6 @@
 # generated files
 bin/
 gen/
+
+#lint file
+lint.xml
