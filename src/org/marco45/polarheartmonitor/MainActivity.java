@@ -237,6 +237,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	public void receiveData(){		
 		runOnUiThread(new Runnable() {
 			public void run() {
+				menuBool=true;
 				TextView rpm = (TextView) findViewById(R.id.rpm);
 				rpm.setText(DataHandler.getInstance().getLastValue()+" BPM");
 
