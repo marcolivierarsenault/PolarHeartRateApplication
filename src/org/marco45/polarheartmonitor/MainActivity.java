@@ -42,16 +42,16 @@ import android.widget.Toast;
 public class MainActivity extends Activity  implements OnItemSelectedListener, Observer {
 
 	boolean searchBt = true;
-	ConnectThread reader;
+	//ConnectThread reader;
 	BluetoothAdapter mBluetoothAdapter;
 	Set<BluetoothDevice> pairedDevices;
 	boolean menuBool = false;
-	int i =0;
+	//int i =0;
 	private XYPlot plot;
-	SimpleXYSeries series1;
+	//SimpleXYSeries series1;
 	Tracker t;//Set the Tracker
-	
-	
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,61 +59,72 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 
 		DataHandler.getInstance().addObserver(this);
 
-		//Verify if bluetooth if activated, if not activate it
-		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();    
-		if (!mBluetoothAdapter.isEnabled()) {
-			new AlertDialog.Builder(this)
-			.setTitle(R.string.bluetooth)
-			.setMessage(R.string.bluetoothOff)
-			.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) { 
-					mBluetoothAdapter.enable();
-					try {Thread.sleep(2000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		if(DataHandler.getInstance().newValue){
+
+			//Verify if bluetooth if activated, if not activate it
+			mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();    
+			if (!mBluetoothAdapter.isEnabled()) {
+				new AlertDialog.Builder(this)
+				.setTitle(R.string.bluetooth)
+				.setMessage(R.string.bluetoothOff)
+				.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) { 
+						mBluetoothAdapter.enable();
+						try {Thread.sleep(2000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						listBT();
 					}
-					listBT();
-				}
-			})
-			.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) { 
-					searchBt = false;
-				}
-			})
-			.show();
+				})
+				.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) { 
+						searchBt = false;
+					}
+				})
+				.show();
+
+			}
+			else{
+				listBT();
+			}
+
+
+
+			// Create Graph
+			plot = (XYPlot) findViewById(R.id.dynamicPlot);
+			if(plot.getSeriesSet().size()==0){
+				Number[] series1Numbers = {};
+				DataHandler.getInstance().setSeries1(new SimpleXYSeries(Arrays.asList(series1Numbers),SimpleXYSeries.ArrayFormat.Y_VALS_ONLY,"Heart Rate")); 
+			}
+			DataHandler.getInstance().setNewValue(false);
 
 		}
-		else{
+		else
+		{
 			listBT();
+			plot = (XYPlot) findViewById(R.id.dynamicPlot);
+
 		}
+		//LOAD Graph
+		LineAndPointFormatter series1Format = new LineAndPointFormatter( Color.rgb(0, 0, 255), Color.rgb(200, 200, 200), null, null ); 
+		series1Format.setPointLabelFormatter(new PointLabelFormatter());
+		plot.addSeries(DataHandler.getInstance().getSeries1(), series1Format); 
+		plot.setTicksPerRangeLabel(3);
+		plot.getGraphWidget().setDomainLabelOrientation(-45);
 
 		//ANALYTIC
 		t = GoogleAnalytics.getInstance(this).newTracker("UA-51478243-1");
-        t.setScreenName("Polar main page");
-        t.send(new HitBuilders.AppViewBuilder().build());
-
-
-		// Create Graph
-		plot = (XYPlot) findViewById(R.id.dynamicPlot);
-		if(plot.getSeriesSet().size()==0){
-			Number[] series1Numbers = {};
-			series1 = new SimpleXYSeries(
-					Arrays.asList(series1Numbers),SimpleXYSeries.ArrayFormat.Y_VALS_ONLY,"Heart Rate"); 
-			LineAndPointFormatter series1Format = new LineAndPointFormatter( Color.rgb(0, 0, 255), Color.rgb(200, 200, 200), null, null ); 
-			series1Format.setPointLabelFormatter(new PointLabelFormatter());
-			plot.addSeries(series1, series1Format); 
-			plot.setTicksPerRangeLabel(3);
-			plot.getGraphWidget().setDomainLabelOrientation(-45);
-		}
-		
-	
+		t.setScreenName("Polar main page");
+		t.send(new HitBuilders.AppViewBuilder().build());
 
 	}
-	
+
 	@Override
 	protected void onDestroy(){
 		super.onDestroy();
-		//reader.cancel();
+		DataHandler.getInstance().deleteObserver(this);
 	}
 
 	public void onStart(){
@@ -149,6 +160,9 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 			dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spinner1.setOnItemSelectedListener(this);
 			spinner1.setAdapter(dataAdapter);
+			
+			if(DataHandler.getInstance().getID()!=0)
+				spinner1.setSelection(DataHandler.getInstance().getID());
 		}
 	}
 
@@ -158,7 +172,8 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
-			reader.cancel();
+			DataHandler.getInstance().getReader().cancel();
+			//DataHandler.getInstance().setReader(null);
 			System.out.println("menu pes�");
 			menuBool=false;
 			return true;
@@ -181,17 +196,15 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
 			long arg3) {
-		
-		
-        
+
+
+
 		if(arg2!=0){
-			//ANALYTIC
-	        t.setScreenName("Polar Bluetooth Used");
-	        t.send(new HitBuilders.AppViewBuilder().build());
-	        
-	      //Actual work
-			reader = new ConnectThread((BluetoothDevice) pairedDevices.toArray()[arg2-1], this);
-			reader.start();
+			//Actual work
+			DataHandler.getInstance().setID(arg2);
+			DataHandler.getInstance().setReader(new ConnectThread((BluetoothDevice) pairedDevices.toArray()[arg2-1], this));
+			DataHandler.getInstance().getReader().start();
+
 			menuBool=true;
 
 		}
@@ -200,7 +213,8 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 
 	@Override
 	public boolean onPrepareOptionsMenu (Menu menu) {
-		menu.findItem(R.id.action_settings).setEnabled(menuBool);
+		//menu.findItem(R.id.action_settings).setEnabled(menuBool);
+		menu.findItem(R.id.action_settings).setVisible(false);//MENU OFF NOT WORKING
 		return true;
 	}
 
@@ -221,7 +235,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 				TextView rpm = (TextView) findViewById(R.id.rpm);
 				rpm.setText("0 BMP");
 				Spinner spinner1 = (Spinner) findViewById(R.id.spinner1);
-				spinner1.setSelection(0);
+				spinner1.setSelection(DataHandler.getInstance().getID());
 			}
 		});
 	}
@@ -235,6 +249,10 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	 * Update Gui with new value from receiver
 	 */
 	public void receiveData(){		
+		//ANALYTIC
+		t.setScreenName("Polar Bluetooth Used");
+		t.send(new HitBuilders.AppViewBuilder().build());
+
 		runOnUiThread(new Runnable() {
 			public void run() {
 				menuBool=true;
@@ -242,7 +260,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 				rpm.setText(DataHandler.getInstance().getLastValue()+" BPM");
 
 				if(DataHandler.getInstance().getLastValue()!=0){
-					series1.addLast(0, DataHandler.getInstance().getLastValue());				
+					DataHandler.getInstance().getSeries1().addLast(0, DataHandler.getInstance().getLastValue());				
 					plot.redraw();
 				}
 

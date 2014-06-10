@@ -2,6 +2,8 @@ package org.marco45.polarheartmonitor;
 
 import java.util.Observable;
 
+import com.androidplot.xy.SimpleXYSeries;
+
 /**
  * This handler is specalised for decoding my polar hart rate monitor and get the data from it
  * Data format is something like this
@@ -24,10 +26,18 @@ import java.util.Observable;
 public class DataHandler extends Observable{
 	private static DataHandler dd = new DataHandler();
 	
+	//DATA FOR SAVING	
+	boolean menuBool;
+	boolean newValue = true;
+	SimpleXYSeries series1;
+	ConnectThread reader;
+	
 	int pos=0;
 	int val=0;
 	int min=0;
 	int max=0;
+
+	int id;
 	
 	private DataHandler(){
 		
@@ -63,6 +73,46 @@ public class DataHandler extends Observable{
 	
 	public int getMax(){
 		return max;
+	}
+	
+
+	public boolean isMenuBool() {
+		return menuBool;
+	}
+
+	public void setMenuBool(boolean menuBool) {
+		this.menuBool = menuBool;
+	}
+
+	public boolean isNewValue() {
+		return newValue;
+	}
+
+	public void setNewValue(boolean newValue) {
+		this.newValue = newValue;
+	}
+
+	public SimpleXYSeries getSeries1() {
+		return series1;
+	}
+
+	public void setSeries1(SimpleXYSeries series1) {
+		this.series1 = series1;
+	}
+
+	public ConnectThread getReader() {
+		return reader;
+	}
+
+	public void setReader(ConnectThread reader) {
+		this.reader = reader;
+	}
+
+	public int getID() {
+		return id;
+	}
+	public void setID(int id) {
+		this.id=id;
 	}
 	
 	
