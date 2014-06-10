@@ -16,6 +16,8 @@
         This app is a simple app that provides connectivity for Polar heart monitor. \nIt only diplays information without complex settings or logging information for jogging.
         No need to start a session or to record data.
         
-        \n\n\n****The Polar device needs to be paired with the phone in android.</string>
+        \n\n\n****The Polar device needs to be paired with the phone in android.
+        
+         \n\n\n \n\n\n Please if you could translate this app on other language it would be really nice! Just fork me on GitHub  https://github.com/marcolivierarsenault/PolarHeartRateApplication (Also work if you want to add more features)</string>
 
 </resources>

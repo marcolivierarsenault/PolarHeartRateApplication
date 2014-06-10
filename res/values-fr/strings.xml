@@ -15,6 +15,8 @@
     <string name="aboutText">"Cette application est une application qui fournit une connection bluetooth pour les bandes Polar.
         \nL'application fournit une interface simple qui affiche simplement le battement de coeur par minute.        
         \n\n\n****La bande Polar doit être pairé avec le téléphone avant de lancer cette application."
+        
+         \n\n\n \n\n\n Si vous pouviez traduire l'application dans d'autre langues ça serais très gentils. simplement Forker sur Github  https://github.com/marcolivierarsenault/PolarHeartRateApplication 
 	</string>
 
 </resources>
