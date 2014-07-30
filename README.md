@@ -10,3 +10,4 @@ https://play.google.com/store/apps/details?id=org.marco45.polarheartmonitor
 
 or you can download it from Github
 https://github.com/marcolivierarsenault/PolarHeartRateApplication/releases/tag/V1.3
+
