@@ -58,6 +58,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		setContentView(R.layout.activity_main);
 
 		DataHandler.getInstance().addObserver(this);
+		ExportHandler.getInstance().start(this);
 
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		if(DataHandler.getInstance().newValue){
@@ -125,6 +126,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	protected void onDestroy(){
 		super.onDestroy();
 		DataHandler.getInstance().deleteObserver(this);
+		ExportHandler.getInstance().close();
 	}
 
 	public void onStart(){
