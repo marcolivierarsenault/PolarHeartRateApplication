@@ -41,6 +41,8 @@ import android.widget.Toast;
  */
 public class MainActivity extends Activity  implements OnItemSelectedListener, Observer {
 
+	private int MAX_SIZE = 60; //graph max size
+	
 	boolean searchBt = true;
 	//ConnectThread reader;
 	BluetoothAdapter mBluetoothAdapter;
@@ -260,7 +262,9 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 				rpm.setText(DataHandler.getInstance().getLastValue()+" BPM");
 
 				if(DataHandler.getInstance().getLastValue()!=0){
-					DataHandler.getInstance().getSeries1().addLast(0, DataHandler.getInstance().getLastValue());				
+					DataHandler.getInstance().getSeries1().addLast(0, DataHandler.getInstance().getLastValue());
+					if(DataHandler.getInstance().getSeries1().size()>MAX_SIZE)
+						DataHandler.getInstance().getSeries1().removeFirst();//Prevent graph to overload data.
 					plot.redraw();
 				}
 
