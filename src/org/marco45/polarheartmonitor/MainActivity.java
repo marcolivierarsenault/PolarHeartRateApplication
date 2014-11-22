@@ -252,8 +252,8 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	 */
 	public void receiveData(){		
 		//ANALYTIC
-		t.setScreenName("Polar Bluetooth Used");
-		t.send(new HitBuilders.AppViewBuilder().build());
+		//t.setScreenName("Polar Bluetooth Used");
+		//t.send(new HitBuilders.AppViewBuilder().build());
 
 		runOnUiThread(new Runnable() {
 			public void run() {
