@@ -47,6 +47,14 @@
             android:text="@string/min" />
 
         <TextView
+            android:id="@+id/avg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/avg" />
+
+        <TextView
             android:id="@+id/max"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

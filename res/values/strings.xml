@@ -10,6 +10,7 @@
     <string name="rpm">BPM</string>
     <string name="min">min</string>
     <string name="max">max</string>
+    <string name="avg">avg</string>
     <string name="about">About</string>
     <string name="title_activity_about">About</string>
     <string name="aboutText">
