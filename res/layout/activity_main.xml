@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
@@ -69,5 +69,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         title="Heart Rate" />
+    
+        <fragment android:name="org.marco45.polarheartmonitor.MainActivity$PlaceholderFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/adFragment" />
 
-</LinearLayout>
+    <fragment
+        android:id="@+id/adFragment"
+        android:name="org.marco45.polarheartmonitor.MainActivity$AdFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>
