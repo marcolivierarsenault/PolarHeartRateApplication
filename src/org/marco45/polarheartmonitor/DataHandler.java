@@ -36,6 +36,10 @@ public class DataHandler extends Observable{
 	int val=0;
 	int min=0;
 	int max=0;
+	
+	//for the average maths
+	int data=0;
+	int total=0;
 
 	int id;
 	
@@ -53,6 +57,10 @@ public class DataHandler extends Observable{
 		}
 		else if (pos==5){
 			val=i;
+			if(val!=0){
+				data+=val;//Average maths
+				total++;//Average maths
+			}
 			if(val<min||min==0)
 				min=val;
 			else if(val>max)
@@ -73,6 +81,12 @@ public class DataHandler extends Observable{
 	
 	public int getMax(){
 		return max;
+	}
+	
+	public int getAvg(){
+		if(total==0)
+			return 0;
+		return data/total;
 	}
 	
 
