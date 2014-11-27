@@ -13,6 +13,7 @@
     <string name="avg">avg</string>
     <string name="about">About</string>
     <string name="title_activity_about">About</string>
+    <string name="banner_ad_unit_id">ca-app-pub-7344227317954564/2556270733</string>
     <string name="aboutText">
         This app is a simple app that provides connectivity for Polar heart monitor. \nIt only diplays information without complex settings or logging information for jogging.
         No need to start a session or to record data.
