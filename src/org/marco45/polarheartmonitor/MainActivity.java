@@ -76,6 +76,10 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
         // Start loading the ad in the background.
         mAdView.loadAd(adRequest);
         
+        if(	android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR2){
+        	h7=true;
+        }
+        
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		if(DataHandler.getInstance().newValue){
 
@@ -219,10 +223,16 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		if(arg2!=0){
 			//Actual work
 			DataHandler.getInstance().setID(arg2);
-			new H7ConnectThread((BluetoothDevice) pairedDevices.toArray()[DataHandler.getInstance().getID()-1], this);
-			//DataHandler.getInstance().setReader(new ConnectThread((BluetoothDevice) pairedDevices.toArray()[arg2-1], this));
-			//DataHandler.getInstance().getReader().start();
-			normal=true;
+			if(!h7 && ((BluetoothDevice) pairedDevices.toArray()[DataHandler.getInstance().getID()-1]).getName().contains("H7"))
+			{
+				DataHandler.getInstance().setH7(new H7ConnectThread((BluetoothDevice) pairedDevices.toArray()[DataHandler.getInstance().getID()-1], this));
+				h7=true;
+			}
+			else{
+				DataHandler.getInstance().setReader(new ConnectThread((BluetoothDevice) pairedDevices.toArray()[arg2-1], this));
+				DataHandler.getInstance().getReader().start();
+				normal=true;
+			}
 			menuBool=true;
 
 		}
@@ -257,13 +267,15 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 				spinner1.setSelection(DataHandler.getInstance().getID());
 				
 				if(h7==false){
-					//try H7
-					System.out.println("TRYING H7");
-					new H7ConnectThread((BluetoothDevice) pairedDevices.toArray()[DataHandler.getInstance().getID()-1], ac);
+					DataHandler.getInstance().setReader(null);
+					DataHandler.getInstance().setH7(new H7ConnectThread((BluetoothDevice) pairedDevices.toArray()[DataHandler.getInstance().getID()-1], ac));
+					h7=true;
 				}
 				else if(normal==false){
-					//try normal
-					System.out.println("TRYING Normal");
+					DataHandler.getInstance().setH7(null);
+					DataHandler.getInstance().setReader(new ConnectThread((BluetoothDevice) pairedDevices.toArray()[DataHandler.getInstance().getID()-1], ac));
+					DataHandler.getInstance().getReader().start();
+					normal=true;
 				}
 			}
 		});

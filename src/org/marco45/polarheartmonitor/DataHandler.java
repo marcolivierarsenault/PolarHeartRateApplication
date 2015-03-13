@@ -31,6 +31,7 @@ public class DataHandler extends Observable{
 	boolean newValue = true;
 	SimpleXYSeries series1;
 	ConnectThread reader;
+	H7ConnectThread H7;
 	
 	int pos=0;
 	int val=0;
@@ -133,5 +134,11 @@ public class DataHandler extends Observable{
 		this.id=id;
 	}
 	
+	public void setH7(H7ConnectThread H7){
+		this.H7=H7;
+	}
+	public H7ConnectThread getH7(){
+		return H7;
+	}
 	
 }

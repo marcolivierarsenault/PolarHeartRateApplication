@@ -1,6 +1,5 @@
 package org.marco45.polarheartmonitor;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,8 +11,6 @@ import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
-import android.bluetooth.BluetoothSocket;
-import android.util.Log;
 
 /**
  * This thread to the connection with the bluetooth device
@@ -21,14 +18,11 @@ import android.util.Log;
  *
  */
 @SuppressLint("NewApi")
-public class H7ConnectThread{
+public class H7ConnectThread  extends Thread{
 	BluetoothAdapter mBluetoothAdapter;
 	MainActivity ac;
 	public H7ConnectThread(BluetoothDevice device, MainActivity ac) {
-		// Use a temporary object that is later assigned to mmSocket,
-		// because mmSocket is final
 		this.ac=ac;
-		BluetoothSocket tmp = null;
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
 
@@ -69,7 +63,7 @@ public class H7ConnectThread{
 					for (BluetoothGattDescriptor descriptor : cc.getDescriptors()) {
 					    //find descriptor UUID that matches Client Characteristic Configuration (0x2902)
 					    // and then call setValue on that descriptor
-						boolean aa = gatt.setCharacteristicNotification(cc,true);
+						gatt.setCharacteristicNotification(cc,true);
 						descriptor.setValue( BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
 					    gatt.writeDescriptor(descriptor);
 					}
