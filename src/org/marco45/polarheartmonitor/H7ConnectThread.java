@@ -20,6 +20,7 @@ import android.util.Log;
  * @author Marco
  *
  */
+@SuppressLint("NewApi")
 public class H7ConnectThread{
 	BluetoothAdapter mBluetoothAdapter;
 	MainActivity ac;
@@ -42,30 +43,26 @@ public class H7ConnectThread{
 	public void cancel() {
 
 	}
-	
+
 	
 	private final BluetoothGattCallback btleGattCallback = new BluetoothGattCallback() {
 		 
 	    @Override
 	    public void onCharacteristicChanged(BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {
-	    	//byte[] data = characteristic.getValue();
-	    	//Log.i(ac.getPackageName(), data.toString());
-	    	System.out.println("==========================================");
+	    	byte[] data = characteristic.getValue();
+	    	int bmp = data[1];
+	    	DataHandler.getInstance().cleanInput(bmp);
 	    }
 	 
 	    @Override
 	    public void onConnectionStateChange(final BluetoothGatt gatt, final int status, final int newState) { 
-			System.out.println("****************************************"+status+" " + newState);
 			gatt.discoverServices();
 	    }
 	 
 	    @Override
 	    public void onServicesDiscovered(final BluetoothGatt gatt, final int status) { 
-	    	System.out.println("++++++++++++++++++++++++++++++++++++++");
 	    	BluetoothGattService service = gatt.getService(UUID.fromString("0000180D-0000-1000-8000-00805F9B34FB"));
 			//BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString("00002A37-0000-1000-8000-00805F9B34FB"));
-			if(service==null)
-				System.out.println("==========================================");
 			List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
 			for (BluetoothGattCharacteristic cc : characteristics)
 				{
@@ -73,9 +70,7 @@ public class H7ConnectThread{
 					    //find descriptor UUID that matches Client Characteristic Configuration (0x2902)
 					    // and then call setValue on that descriptor
 						boolean aa = gatt.setCharacteristicNotification(cc,true);
-						
-						System.out.println(aa + "gggggggggggggggggggggggggg"+descriptor.getUuid());
-					    descriptor.setValue( BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+						descriptor.setValue( BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
 					    gatt.writeDescriptor(descriptor);
 					}
 				}

@@ -56,19 +56,23 @@ public class DataHandler extends Observable{
 			pos=0;
 		}
 		else if (pos==5){
-			val=i;
-			if(val!=0){
-				data+=val;//Average maths
-				total++;//Average maths
-			}
-			if(val<min||min==0)
-				min=val;
-			else if(val>max)
-				max=val;
-			setChanged();
-			notifyObservers();
+			cleanInput(i);
 		}
 		pos++;
+	}
+	
+	public void cleanInput(int i){
+		val=i;
+		if(val!=0){
+			data+=val;//Average maths
+			total++;//Average maths
+		}
+		if(val<min||min==0)
+			min=val;
+		else if(val>max)
+			max=val;
+		setChanged();
+		notifyObservers();
 	}
 	
 	public int getLastValue(){
