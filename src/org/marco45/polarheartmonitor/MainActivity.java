@@ -54,6 +54,9 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	private XYPlot plot;
 	//SimpleXYSeries series1;
 	Tracker t;//Set the Tracker
+	boolean h7 = false;
+	boolean normal = false;
+	
 
 
 	@Override
@@ -216,9 +219,10 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		if(arg2!=0){
 			//Actual work
 			DataHandler.getInstance().setID(arg2);
-			DataHandler.getInstance().setReader(new ConnectThread((BluetoothDevice) pairedDevices.toArray()[arg2-1], this));
-			DataHandler.getInstance().getReader().start();
-
+			new H7ConnectThread((BluetoothDevice) pairedDevices.toArray()[DataHandler.getInstance().getID()-1], this);
+			//DataHandler.getInstance().setReader(new ConnectThread((BluetoothDevice) pairedDevices.toArray()[arg2-1], this));
+			//DataHandler.getInstance().getReader().start();
+			normal=true;
 			menuBool=true;
 
 		}
@@ -243,6 +247,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	 */
 	public void connectionError(){
 		menuBool=false;
+		final MainActivity ac = this;
 		runOnUiThread(new Runnable() {
 			public void run() {
 				Toast.makeText(getBaseContext(),getString(R.string.couldnotconnect),Toast.LENGTH_SHORT).show();
@@ -250,8 +255,19 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 				rpm.setText("0 BMP");
 				Spinner spinner1 = (Spinner) findViewById(R.id.spinner1);
 				spinner1.setSelection(DataHandler.getInstance().getID());
+				
+				if(h7==false){
+					//try H7
+					System.out.println("TRYING H7");
+					new H7ConnectThread((BluetoothDevice) pairedDevices.toArray()[DataHandler.getInstance().getID()-1], ac);
+				}
+				else if(normal==false){
+					//try normal
+					System.out.println("TRYING Normal");
+				}
 			}
 		});
+		
 	}
 
 	@Override
