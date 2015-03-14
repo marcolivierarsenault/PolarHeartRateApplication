@@ -20,6 +20,11 @@ import com.androidplot.xy.SimpleXYSeries;
  *               bit 0 is Beat Detection flag.
  *               
  *   src:http://ww.telent.net/2012/5/3/listening_to_a_polar_bluetooth_hrm_in_linux
+ *   
+ *   
+ *   
+ *   Now also work for BTLE (H7) based on the bluetooth protocol. 
+ *   
  * @author Marco
  *
  */

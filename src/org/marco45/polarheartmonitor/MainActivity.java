@@ -25,6 +25,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,18 +45,14 @@ import android.widget.Toast;
 public class MainActivity extends Activity  implements OnItemSelectedListener, Observer {
 
 	private int MAX_SIZE = 60; //graph max size
-	
 	boolean searchBt = true;
-	//ConnectThread reader;
 	BluetoothAdapter mBluetoothAdapter;
 	Set<BluetoothDevice> pairedDevices;
-	boolean menuBool = false;
-	//int i =0;
+	boolean menuBool = false; //display or not the disconnect option
 	private XYPlot plot;
-	//SimpleXYSeries series1;
 	Tracker t;//Set the Tracker
-	boolean h7 = false;
-	boolean normal = false;
+	boolean h7 = false; //Was the BTLE tested
+	boolean normal = false; //Was the BT tested
 	
 
 
@@ -63,9 +60,8 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		DataHandler.getInstance().addObserver(this);
-		
+		Log.i("Main Activity", "Starting Polar HR monitor main activity");
+		DataHandler.getInstance().addObserver(this);		
 		AdView mAdView = (AdView) findViewById(R.id.adView);
 
         // Create an ad request. Check logcat output for the hashed device ID to
@@ -76,13 +72,16 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
         // Start loading the ad in the background.
         mAdView.loadAd(adRequest);
         
+        //Verify if device is to old for BTLE
         if(	android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR2){
+
+    		Log.i("Main Activity", "old device H7 disbled");
         	h7=true;
         }
         
+        //verify if bluetooth device are enabled
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		if(DataHandler.getInstance().newValue){
-
 			//Verify if bluetooth if activated, if not activate it
 			mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();    
 			if (!mBluetoothAdapter.isEnabled()) {
@@ -105,7 +104,6 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 					}
 				})
 				.show();
-
 			}
 			else{
 				listBT();
@@ -150,15 +148,13 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 
 	public void onStart(){
 		super.onStart();
-
-
-
 	}
 
 	/**
 	 * Run on startup to list bluetooth paired device
 	 */
 	public void listBT(){
+		Log.d("Main Activity", "Listing BT elements");
 		if(searchBt){
 			//Discover bluetooth devices
 			List<String> list = new ArrayList<String>();
@@ -172,8 +168,6 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 					list.add(device.getName() + "\n" + device.getAddress());
 				}
 			}
-
-
 			//Populate drop down
 			Spinner spinner1 = (Spinner) findViewById(R.id.spinner1);
 			ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
@@ -192,14 +186,27 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	 */
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			DataHandler.getInstance().getReader().cancel();
-			//DataHandler.getInstance().setReader(null);
-			System.out.println("menu pes�");
+		Log.d("Main Activity", "Menu pressed");
+		if (id == R.id.action_settings) { //close connection
+			if(DataHandler.getInstance().getReader()==null)
+			{
+				Log.i("Main Activity", "Disabling h7");
+				DataHandler.getInstance().getH7().cancel();
+				DataHandler.getInstance().setH7(null);	
+				h7=false;
+			}
+			else{
+				Log.i("Main Activity", "Disabling BT");
+				DataHandler.getInstance().getReader().cancel();
+				DataHandler.getInstance().setReader(null);	
+				normal=false;				
+			}		
 			menuBool=false;
 			return true;
 		}
-		else if (id==R.id.about){
+		else if (id==R.id.about){ //about menu
+
+			Log.i("Main Activity", "opening about");
 			Intent intent = new Intent(this, AboutActivity.class);
 			startActivity(intent);
 		}
@@ -214,6 +221,9 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		return true;
 	}
 
+	/**
+	 * When the option is selected in the dropdown we turn on the bluetooth
+	 */
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
 			long arg3) {
@@ -225,10 +235,14 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 			DataHandler.getInstance().setID(arg2);
 			if(!h7 && ((BluetoothDevice) pairedDevices.toArray()[DataHandler.getInstance().getID()-1]).getName().contains("H7"))
 			{
+
+				Log.i("Main Activity", "Starting h7");
 				DataHandler.getInstance().setH7(new H7ConnectThread((BluetoothDevice) pairedDevices.toArray()[DataHandler.getInstance().getID()-1], this));
 				h7=true;
 			}
 			else{
+
+				Log.i("Main Activity", "Starting normal");
 				DataHandler.getInstance().setReader(new ConnectThread((BluetoothDevice) pairedDevices.toArray()[arg2-1], this));
 				DataHandler.getInstance().getReader().start();
 				normal=true;
@@ -241,8 +255,8 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 
 	@Override
 	public boolean onPrepareOptionsMenu (Menu menu) {
-		//menu.findItem(R.id.action_settings).setEnabled(menuBool);
-		menu.findItem(R.id.action_settings).setVisible(false);//MENU OFF NOT WORKING
+		menu.findItem(R.id.action_settings).setEnabled(menuBool);
+		menu.findItem(R.id.action_settings).setVisible(menuBool);
 		return true;
 	}
 
@@ -256,6 +270,8 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	 * Called when bluetooth connection failed
 	 */
 	public void connectionError(){
+
+		Log.w("Main Activity", "Connection error occured");
 		menuBool=false;
 		final MainActivity ac = this;
 		runOnUiThread(new Runnable() {
@@ -267,11 +283,14 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 				spinner1.setSelection(DataHandler.getInstance().getID());
 				
 				if(h7==false){
+
+					Log.w("Main Activity", "starting H7 after error");
 					DataHandler.getInstance().setReader(null);
 					DataHandler.getInstance().setH7(new H7ConnectThread((BluetoothDevice) pairedDevices.toArray()[DataHandler.getInstance().getID()-1], ac));
 					h7=true;
 				}
 				else if(normal==false){
+					Log.w("Main Activity", "Starting normal after error");
 					DataHandler.getInstance().setH7(null);
 					DataHandler.getInstance().setReader(new ConnectThread((BluetoothDevice) pairedDevices.toArray()[DataHandler.getInstance().getID()-1], ac));
 					DataHandler.getInstance().getReader().start();

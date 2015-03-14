@@ -14,12 +14,15 @@ import android.util.Log;
  *
  */
 public class ConnectThread extends Thread {
+	
 	BluetoothAdapter mBluetoothAdapter;
 	private final BluetoothSocket mmSocket;
 	MainActivity ac;
+	
 	public ConnectThread(BluetoothDevice device, MainActivity ac) {
 		// Use a temporary object that is later assigned to mmSocket,
 		// because mmSocket is final
+		Log.i("ConnectThread", "Starting connectThread");
 		this.ac=ac;
 		BluetoothSocket tmp = null;
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -35,10 +38,12 @@ public class ConnectThread extends Thread {
 	}
 
 	public void run() {
+		
+		Log.i("ConnectThread", "Starting the thread for connectThread");
 		// Cancel discovery because it will slow down the connection
-		// mBluetoothAdapter.cancelDiscovery();
+		mBluetoothAdapter.cancelDiscovery();
 		int ok =0;
-		while(ok<2)
+		while(ok<2)//loop to try to connect
 			try {
 				// Connect the device through the socket. This will block
 				// until it succeeds or throws an exception
@@ -52,7 +57,7 @@ public class ConnectThread extends Thread {
 					ok++;
 				else{
 					ac.connectionError();
-					Log.d("Error Bluetooth",connectException.toString());
+					Log.e("ConnectThread","Error with the BT stack " + connectException.toString());
 
 					try {
 						mmSocket.close();
@@ -62,12 +67,12 @@ public class ConnectThread extends Thread {
 			}
 
 		// Do work to manage the connection (in a separate thread)
-		while (true){
+		while (true){ //reading loop
 			try {
-				DataHandler.getInstance().acqui(mmSocket.getInputStream().read());
+				DataHandler.getInstance().acqui(mmSocket.getInputStream().read()); //read value
 			} catch (IOException e) {
 				ac.connectionError();
-				Log.d("Error Bluetooth",e.toString());
+				Log.e("ConnectThread","Error with the BT stack " + e.toString());
 
 				try {
 					mmSocket.getInputStream().close();
@@ -80,7 +85,7 @@ public class ConnectThread extends Thread {
 
 	/** Will cancel an in-progress connection, and close the socket */
 	public void cancel() {
-
+		Log.i("ConnectThread","Closing BT connection");
 		try {
 			if(mmSocket!=null && mmSocket.isConnected())
 				mmSocket.close();
