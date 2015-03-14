@@ -23,6 +23,8 @@ public class H7ConnectThread  extends Thread{
 	MainActivity ac;	
 	private BluetoothGatt gat; //gat server
 	private final String HRUUID = "0000180D-0000-1000-8000-00805F9B34FB";
+	static BluetoothGattDescriptor descriptor;
+	static BluetoothGattCharacteristic cc;
 	
 	public H7ConnectThread(BluetoothDevice device, MainActivity ac) {
 		Log.i("H7ConnectThread", "Starting H7 reader BTLE");
@@ -33,6 +35,10 @@ public class H7ConnectThread  extends Thread{
 	
 	/** Will cancel an in-progress connection, and close the socket */
 	public void cancel() {
+		gat.setCharacteristicNotification(cc,false);
+		descriptor.setValue( BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
+	    gat.writeDescriptor(descriptor);
+		
 		gat.disconnect();
 		gat.close();
 		Log.i("H7ConnectThread", "Closing HRsensor");
@@ -76,6 +82,11 @@ public class H7ConnectThread  extends Thread{
 					for (BluetoothGattDescriptor descriptor : cc.getDescriptors()) {
 					    //find descriptor UUID that matches Client Characteristic Configuration (0x2902)
 					    // and then call setValue on that descriptor
+						
+						//Those two line set the value for the disconnection
+						H7ConnectThread.descriptor=descriptor;
+						H7ConnectThread.cc=cc;
+												
 						gatt.setCharacteristicNotification(cc,true);//Register to updates
 						descriptor.setValue( BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
 					    gatt.writeDescriptor(descriptor);

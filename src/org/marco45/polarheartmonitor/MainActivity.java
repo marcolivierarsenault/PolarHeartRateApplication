@@ -237,14 +237,14 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		if(arg2!=0){
 			//Actual work
 			DataHandler.getInstance().setID(arg2);
-			if(!h7 && ((BluetoothDevice) pairedDevices.toArray()[DataHandler.getInstance().getID()-1]).getName().contains("H7"))
+			if(!h7 && ((BluetoothDevice) pairedDevices.toArray()[DataHandler.getInstance().getID()-1]).getName().contains("H7") && DataHandler.getInstance().getReader()==null)
 			{
 
 				Log.i("Main Activity", "Starting h7");
 				DataHandler.getInstance().setH7(new H7ConnectThread((BluetoothDevice) pairedDevices.toArray()[DataHandler.getInstance().getID()-1], this));
 				h7=true;
 			}
-			else{
+			else if (!normal && DataHandler.getInstance().getH7()==null){
 
 				Log.i("Main Activity", "Starting normal");
 				DataHandler.getInstance().setReader(new ConnectThread((BluetoothDevice) pairedDevices.toArray()[arg2-1], this));
