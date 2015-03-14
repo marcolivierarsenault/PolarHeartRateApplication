@@ -53,7 +53,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	Tracker t;//Set the Tracker
 	boolean h7 = false; //Was the BTLE tested
 	boolean normal = false; //Was the BT tested
-	
+	private Spinner spinner1;
 
 
 	@Override
@@ -169,14 +169,14 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 				}
 			}
 			//Populate drop down
-			Spinner spinner1 = (Spinner) findViewById(R.id.spinner1);
+			spinner1 = (Spinner) findViewById(R.id.spinner1);
 			ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
 					android.R.layout.simple_spinner_item, list);
 			dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spinner1.setOnItemSelectedListener(this);
 			spinner1.setAdapter(dataAdapter);
 			
-			if(DataHandler.getInstance().getID()!=0)
+			if(DataHandler.getInstance().getID()!=0 && DataHandler.getInstance().getID() < spinner1.getCount())
 				spinner1.setSelection(DataHandler.getInstance().getID());
 		}
 	}
@@ -188,6 +188,8 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		int id = item.getItemId();
 		Log.d("Main Activity", "Menu pressed");
 		if (id == R.id.action_settings) { //close connection
+			if(spinner1!=null)
+				spinner1.setSelection(0);
 			if(DataHandler.getInstance().getReader()==null)
 			{
 				Log.i("Main Activity", "Disabling h7");
