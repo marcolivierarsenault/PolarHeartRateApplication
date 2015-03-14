@@ -54,8 +54,15 @@ public class H7ConnectThread  extends Thread{
 		//called on the successful connection
 	    @Override
 	    public void onConnectionStateChange(final BluetoothGatt gatt, final int status, final int newState) { 
-			gatt.discoverServices();
-			Log.d("H7ConnectThread", "Connected and discovering services");
+	    	if (newState ==  BluetoothGatt.STATE_DISCONNECTED)
+	    	{
+				Log.e("H7ConnectThread", "device Disconnected");
+				ac.connectionError();
+	    	}
+	    	else{
+				gatt.discoverServices();
+				Log.d("H7ConnectThread", "Connected and discovering services");
+	    	}
 	    }
 	 
 	    //Called when services are discovered.

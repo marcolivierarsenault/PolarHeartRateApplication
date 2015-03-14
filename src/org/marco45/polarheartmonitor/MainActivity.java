@@ -187,9 +187,12 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		Log.d("Main Activity", "Menu pressed");
-		if (id == R.id.action_settings) { //close connection
-			if(spinner1!=null)
+		if (id == R.id.action_settings) { //close connection		
+			menuBool=false;
+			Log.d("Main Activity", "disable pressed");
+			if(spinner1!=null){
 				spinner1.setSelection(0);
+			}
 			if(DataHandler.getInstance().getReader()==null)
 			{
 				Log.i("Main Activity", "Disabling h7");
@@ -202,8 +205,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 				DataHandler.getInstance().getReader().cancel();
 				DataHandler.getInstance().setReader(null);	
 				normal=false;				
-			}		
-			menuBool=false;
+			}
 			return true;
 		}
 		else if (id==R.id.about){ //about menu
@@ -274,33 +276,35 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	public void connectionError(){
 
 		Log.w("Main Activity", "Connection error occured");
-		menuBool=false;
-		final MainActivity ac = this;
-		runOnUiThread(new Runnable() {
-			public void run() {
-				Toast.makeText(getBaseContext(),getString(R.string.couldnotconnect),Toast.LENGTH_SHORT).show();
-				TextView rpm = (TextView) findViewById(R.id.rpm);
-				rpm.setText("0 BMP");
-				Spinner spinner1 = (Spinner) findViewById(R.id.spinner1);
-				spinner1.setSelection(DataHandler.getInstance().getID());
-				
-				if(h7==false){
-
-					Log.w("Main Activity", "starting H7 after error");
-					DataHandler.getInstance().setReader(null);
-					DataHandler.getInstance().setH7(new H7ConnectThread((BluetoothDevice) pairedDevices.toArray()[DataHandler.getInstance().getID()-1], ac));
-					h7=true;
+		if(menuBool==true){//did not manually tried to disconnect
+			Log.d("Main Activity", "in the app");
+			menuBool=false;
+			final MainActivity ac = this;
+			runOnUiThread(new Runnable() {
+				public void run() {
+					Toast.makeText(getBaseContext(),getString(R.string.couldnotconnect),Toast.LENGTH_SHORT).show();
+					//TextView rpm = (TextView) findViewById(R.id.rpm);
+					//rpm.setText("0 BMP");
+					Spinner spinner1 = (Spinner) findViewById(R.id.spinner1);
+					spinner1.setSelection(DataHandler.getInstance().getID());
+					
+					if(h7==false){
+	
+						Log.w("Main Activity", "starting H7 after error");
+						DataHandler.getInstance().setReader(null);
+						DataHandler.getInstance().setH7(new H7ConnectThread((BluetoothDevice) pairedDevices.toArray()[DataHandler.getInstance().getID()-1], ac));
+						h7=true;
+					}
+					else if(normal==false){
+						Log.w("Main Activity", "Starting normal after error");
+						DataHandler.getInstance().setH7(null);
+						DataHandler.getInstance().setReader(new ConnectThread((BluetoothDevice) pairedDevices.toArray()[DataHandler.getInstance().getID()-1], ac));
+						DataHandler.getInstance().getReader().start();
+						normal=true;
+					}
 				}
-				else if(normal==false){
-					Log.w("Main Activity", "Starting normal after error");
-					DataHandler.getInstance().setH7(null);
-					DataHandler.getInstance().setReader(new ConnectThread((BluetoothDevice) pairedDevices.toArray()[DataHandler.getInstance().getID()-1], ac));
-					DataHandler.getInstance().getReader().start();
-					normal=true;
-				}
-			}
-		});
-		
+			});
+		}
 	}
 
 	@Override
@@ -318,7 +322,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 
 		runOnUiThread(new Runnable() {
 			public void run() {
-				menuBool=true;
+				//menuBool=true;
 				TextView rpm = (TextView) findViewById(R.id.rpm);
 				rpm.setText(DataHandler.getInstance().getLastValue()+" BPM");
 
