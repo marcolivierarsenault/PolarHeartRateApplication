@@ -286,7 +286,8 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 					//TextView rpm = (TextView) findViewById(R.id.rpm);
 					//rpm.setText("0 BMP");
 					Spinner spinner1 = (Spinner) findViewById(R.id.spinner1);
-					spinner1.setSelection(DataHandler.getInstance().getID());
+					if( DataHandler.getInstance().getID()< spinner1.getCount())
+						spinner1.setSelection(DataHandler.getInstance().getID());
 					
 					if(h7==false){
 	
