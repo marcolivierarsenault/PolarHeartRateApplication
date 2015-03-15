@@ -52,7 +52,7 @@ public class H7ConnectThread  extends Thread{
 		@Override
 	    public void onCharacteristicChanged(BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {
 	    	byte[] data = characteristic.getValue();
-	    	int bmp = data[1];
+	    	int bmp = data[1] & 0xFF; // To unsign the value
 	    	DataHandler.getInstance().cleanInput(bmp);
 			Log.v("H7ConnectThread", "Data received from HR "+bmp);
 	    }
