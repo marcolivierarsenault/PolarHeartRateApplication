@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Set;
 
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.PointLabelFormatter;
@@ -17,6 +16,7 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -47,7 +47,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	private int MAX_SIZE = 60; //graph max size
 	boolean searchBt = true;
 	BluetoothAdapter mBluetoothAdapter;
-	Set<BluetoothDevice> pairedDevices;
+	List<BluetoothDevice> pairedDevices = new ArrayList<BluetoothDevice>();
 	boolean menuBool = false; //display or not the disconnect option
 	private XYPlot plot;
 	Tracker t;//Set the Tracker
@@ -153,13 +153,15 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	/**
 	 * Run on startup to list bluetooth paired device
 	 */
+	@SuppressWarnings("deprecation")
+	@SuppressLint("NewApi")
 	public void listBT(){
 		Log.d("Main Activity", "Listing BT elements");
 		if(searchBt){
 			//Discover bluetooth devices
-			List<String> list = new ArrayList<String>();
+			final List<String> list = new ArrayList<String>();
 			list.add("");
-			pairedDevices = mBluetoothAdapter.getBondedDevices();
+			pairedDevices.addAll(mBluetoothAdapter.getBondedDevices());
 			// If there are paired devices
 			if (pairedDevices.size() > 0) {
 				// Loop through paired devices
@@ -168,6 +170,36 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 					list.add(device.getName() + "\n" + device.getAddress());
 				}
 			}
+			if(!h7){
+				Log.d("Main Activity", "Listing BTLE elements");
+				final BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
+				    @Override
+				    public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
+				    	if(!list.contains(device.getName() + "\n" + device.getAddress())){
+				    		Log.d("Main Activity", "Adding "+device.getName());
+				    		list.add(device.getName() + "\n" + device.getAddress());
+				    		pairedDevices.add(device);
+				    	}
+				    }
+				};
+				
+				
+				  Thread scannerBTLE = new Thread(){
+					    public void run(){
+				    		Log.d("Main Activity", "Starting scanning for BTLE");
+					    	mBluetoothAdapter.startLeScan(leScanCallback);
+					     try {
+							Thread.sleep(5000);
+				    		Log.d("Main Activity", "Stoping scanning for BTLE");
+							mBluetoothAdapter.stopLeScan(leScanCallback);
+						} catch (InterruptedException e) {
+						}
+					    }
+					  };
+
+					  scannerBTLE.start();
+			}
+
 			//Populate drop down
 			spinner1 = (Spinner) findViewById(R.id.spinner1);
 			ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
