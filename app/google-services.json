@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "981628342491",
+    "firebase_url": "https://admob-app-id-8602804338.firebaseio.com",
+    "project_id": "admob-app-id-8602804338",
+    "storage_bucket": "admob-app-id-8602804338.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:981628342491:android:618c1c282f9654ac",
+        "android_client_info": {
+          "package_name": "org.marco45.polarheartmonitor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "981628342491-a1km3u1055ndnk82stulifss3jfchd09.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSWZ2AYbqTvn_LWvqL01qaXtzE14tLdPM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
