@@ -32,7 +32,9 @@ public class ConnectThread extends Thread {
 			// MY_UUID is the app's UUID string, also used by the server code
 			UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 			tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
-		} catch (IOException e) { }
+		} catch (IOException ignored) {
+			Log.e("ConnectThread", "Error on getting the device");
+		}
 		mmSocket = tmp;
 
 	}
@@ -61,7 +63,9 @@ public class ConnectThread extends Thread {
 
 					try {
 						mmSocket.close();
-					} catch (IOException closeException) { }
+					} catch (IOException closeException) {
+                        Log.e("ConnectThread", "Error on getting the stack");
+                    }
 					return;
 				}
 			}
@@ -77,7 +81,9 @@ public class ConnectThread extends Thread {
 				try {
 					mmSocket.getInputStream().close();
 					mmSocket.close();
-				} catch (IOException closeException) { }
+				} catch (IOException closeException) {
+                    Log.e("ConnectThread", "Error on getting the stack");
+                }
 				return;
 			}
 		}
@@ -89,6 +95,8 @@ public class ConnectThread extends Thread {
 		try {
 			if(mmSocket!=null && mmSocket.isConnected())
 				mmSocket.close();
-		} catch (IOException e) { }
+		} catch (IOException e) {
+            Log.e("ConnectThread", "Error on closing bluetooth");
+        }
 	}
 }

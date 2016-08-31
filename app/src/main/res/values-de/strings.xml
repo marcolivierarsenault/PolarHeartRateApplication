@@ -15,11 +15,11 @@
     <string name="title_activity_about">Über</string>
     <string name="banner_ad_unit_id">ca-app-pub-7344227317954564/2556270733</string>
     <string name="aboutText">
-        Diese App ist eine simple App welche eine Verbindung für POLAR Pulsmesser bereit stellt. \nSie zeigt nur Informationen ohne komplexe Einstellungen oder Aufzeichnungen fürs Joggen.
+        Diese App ist eine simple App welche eine Verbindung für POLAR Pulsmesser bereitstellt. \nSie zeigt nur Informationen ohne komplexe Einstellungen oder Aufzeichnungen fürs Joggen.
         Es ist nicht notwendig eine Session zu starten oder Daten aufzuzeichen.
         
         \n\n\n****Das POLAR Gerät muss mit dem Android Gerät in den Einstellungen gekoppelt werden.
         
-         \n\n\n \n\n\n Wenn du diese App in andere Sprachen übersetzen könntest währe das sehr nett! "Fork" mich dafür einfach auf GitHub https://github.com/marcolivierarsenault/PolarHeartRateApplication (Funktioniert auch wenn du weitere Funktionen hinzufügen möchtest)</string>
+         \n\n\n \n\n\n Wenn du diese App in andere Sprachen übersetzen könntest wäre das sehr nett! "Fork" mich dafür einfach auf GitHub https://github.com/marcolivierarsenault/PolarHeartRateApplication (Funktioniert auch wenn du weitere Funktionen hinzufügen möchtest)</string>
 
 </resources>

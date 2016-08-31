@@ -73,7 +73,7 @@ public class H7ConnectThread  extends Thread{
 	 
 	    //Called when services are discovered.
 	    @Override
-	    public void onServicesDiscovered(final BluetoothGatt gatt, final int status) { 
+	    public void onServicesDiscovered(final BluetoothGatt gatt, final int status) {
 	    	BluetoothGattService service = gatt.getService(UUID.fromString(HRUUID)); // Return the HR service
 			//BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString("00002A37-0000-1000-8000-00805F9B34FB"));
 			List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics(); //Get the hart rate value

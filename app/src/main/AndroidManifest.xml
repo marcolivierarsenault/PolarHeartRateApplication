@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.marco45.polarheartmonitor">
 
     <!-- Include required permissions for Google Mobile Ads to run. -->
@@ -9,11 +10,18 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.vending.BILLING" />
 
+    <!--@
+    TODO take care og the backup thing More info: https://developer.android.com/preview/backup/index.html (at line 12)
+    TODO App is not indexable by Google Search; consider adding at least one Activity with an ACTION-VIEW intent-filler. See issue explanation for more details. (at line 17)
+
+    FIX the two things in tools:ignore
+    -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
         <!-- This meta-data tag is required to use Google Play Services. -->
         <meta-data

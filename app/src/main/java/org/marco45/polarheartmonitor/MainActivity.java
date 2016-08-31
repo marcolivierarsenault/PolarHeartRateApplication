@@ -17,7 +17,6 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -51,7 +50,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener, Ob
     private int MAX_SIZE = 60; //graph max size
     boolean searchBt = true;
     BluetoothAdapter mBluetoothAdapter;
-    List<BluetoothDevice> pairedDevices = new ArrayList<BluetoothDevice>();
+    List<BluetoothDevice> pairedDevices = new ArrayList<>();
     boolean menuBool = false; //display or not the disconnect option
     private XYPlot plot;
     boolean h7 = false; //Was the BTLE tested
@@ -372,23 +371,23 @@ public class MainActivity extends Activity implements OnItemSelectedListener, Ob
             public void run() {
                 //menuBool=true;
                 TextView rpm = (TextView) findViewById(R.id.rpm);
-                rpm.setText(DataHandler.getInstance().getLastValue() + getString(R.string.rpm));
+                rpm.setText(DataHandler.getInstance().getLastValue());
 
-                if (DataHandler.getInstance().getLastValue() != 0) {
-                    DataHandler.getInstance().getSeries1().addLast(0, DataHandler.getInstance().getLastValue());
+                if (DataHandler.getInstance().getLastIntValue() != 0) {
+                    DataHandler.getInstance().getSeries1().addLast(0, DataHandler.getInstance().getLastIntValue());
                     if (DataHandler.getInstance().getSeries1().size() > MAX_SIZE)
                         DataHandler.getInstance().getSeries1().removeFirst();//Prevent graph to overload data.
                     plot.redraw();
                 }
 
                 TextView min = (TextView) findViewById(R.id.min);
-                min.setText("Min " + DataHandler.getInstance().getMin() + getString(R.string.rpm));
+                min.setText(DataHandler.getInstance().getMin());
 
                 TextView avg = (TextView) findViewById(R.id.avg);
-                avg.setText("Avg " + DataHandler.getInstance().getAvg() + getString(R.string.rpm));
+                avg.setText(DataHandler.getInstance().getAvg());
 
                 TextView max = (TextView) findViewById(R.id.max);
-                max.setText("Max " + DataHandler.getInstance().getMax() + getString(R.string.rpm));
+                max.setText(DataHandler.getInstance().getMax());
             }
         });
     }

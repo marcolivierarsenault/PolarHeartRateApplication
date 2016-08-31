@@ -10,8 +10,10 @@
     <string name="rpm">BPM</string>
     <string name="min">min</string>
     <string name="max">max</string>
+    <string name="avg">moy</string>
     <string name="about">À propos</string>
     <string name="title_activity_about">À propos</string>
+    <string name="banner_ad_unit_id">ca-app-pub-7344227317954564/2556270733</string>
     <string name="aboutText">"Cette application est une application qui fournit une connection bluetooth pour les bandes Polar.
         \nL'application fournit une interface simple qui affiche simplement le battement de coeur par minute.        
         \n\n\n****La bande Polar doit être pairé avec le téléphone avant de lancer cette application."

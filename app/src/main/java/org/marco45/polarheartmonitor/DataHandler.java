@@ -31,8 +31,7 @@ import com.androidplot.xy.SimpleXYSeries;
 public class DataHandler extends Observable{
 	private static DataHandler dd = new DataHandler();
 	
-	//DATA FOR SAVING	
-	boolean menuBool;
+	//DATA FOR SAVING
 	boolean newValue = true;
 	SimpleXYSeries series1;
 	ConnectThread reader;
@@ -80,36 +79,30 @@ public class DataHandler extends Observable{
 		setChanged();
 		notifyObservers();
 	}
+
+    public String getLastValue(){
+
+        return val + " BPM";
+    }
+
+    public int getLastIntValue(){
+
+        return val;
+    }
 	
-	public int getLastValue(){
-		return val;
+	public String getMin(){
+		return "Min " + min + " BPM";
 	}
 	
-	public int getMin(){
-		return min;
+	public String getMax(){
+
+		return "Max " + max + " BPM";
 	}
 	
-	public int getMax(){
-		return max;
-	}
-	
-	public int getAvg(){
+	public String getAvg(){
 		if(total==0)
-			return 0;
-		return data/total;
-	}
-	
-
-	public boolean isMenuBool() {
-		return menuBool;
-	}
-
-	public void setMenuBool(boolean menuBool) {
-		this.menuBool = menuBool;
-	}
-
-	public boolean isNewValue() {
-		return newValue;
+            return "Avg " + 0 + " BPM";
+		return "Avg " + data/total + " BPM";
 	}
 
 	public void setNewValue(boolean newValue) {
@@ -138,7 +131,7 @@ public class DataHandler extends Observable{
 	public void setID(int id) {
 		this.id=id;
 	}
-	
+
 	public void setH7(H7ConnectThread H7){
 		this.H7=H7;
 	}
